@@ -9,16 +9,16 @@ pipeline {
 
     environment {
         // GitHub public repository
-        GITHUB_REPO = 'https://github.com/MezghichGit/jenkins_webapp.git'
+        GITHUB_REPO = 'https://github.com/alexperseval/jenkins_webapp.git'
         GITHUB_BRANCH = 'master'
 
         // Docker Hub
-        DOCKERHUB_USERNAME = 'aminesip'
-        DOCKERHUB_CREDENTIALS = 'dockerhub-credentials-mezghich'
-        IMAGE_NAME = 'ibcgos-app-springboot-mezghich'
+        DOCKERHUB_USERNAME = 'alexperseval'
+        DOCKERHUB_CREDENTIALS = 'dockerhub-credentials-alexandre'
+        IMAGE_NAME = 'ibcgos-app-springboot-alexandre'
 
         // Docker container
-        CONTAINER_NAME = 'ibcgos-app-springboot-mezghich-container'
+        CONTAINER_NAME = 'ibcgos-app-springboot-alexandre-container'
         HOST_PORT = '8065'
         CONTAINER_PORT = '89'
     }
