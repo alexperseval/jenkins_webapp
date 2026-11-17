@@ -24,7 +24,7 @@ pipeline {
 
         // Gmail SMTP
         EMAIL_CREDENTIALS = 'Cred-Gmail-Mezghich'
-        EMAIL_TO = 'alexandre.perseval@magellanpartner.eu'
+        EMAIL_TO = 'alexandre.perseval@magellangroup.eu'
     }
 
     stages {
