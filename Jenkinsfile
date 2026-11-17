@@ -21,6 +21,10 @@ pipeline {
         CONTAINER_NAME = 'ibcgos-app-springboot-alexandre-container'
         HOST_PORT = '8067'
         CONTAINER_PORT = '89'
+
+        // Gmail SMTP
+        EMAIL_CREDENTIALS = 'Cred-Gmail-Mezghich'
+        EMAIL_TO = 'alexandre.perseval@magellanpartner.eu'
     }
 
     stages {
@@ -139,16 +143,71 @@ pipeline {
     }
 
     post {
+
         success {
-            echo '======================================'
             echo 'DEPLOIEMENT SPRING BOOT REUSSI !'
-            echo "Docker Hub: ${DOCKERHUB_USERNAME}/${IMAGE_NAME}"
-            echo "Tag: ${BUILD_NUMBER}"
-            echo '======================================'
+
+            emailext(
+                subject: "SUCCESS: ${JOB_NAME} - Build #${BUILD_NUMBER}",
+                mimeType: 'text/html',
+                body: """
+                    <h2 style="color:green;">Pipeline CI/CD réussie !</h2>
+
+                    <p>Bonjour,</p>
+
+                    <p>Le déploiement de votre application Spring Boot
+                    a été effectué avec succès.</p>
+
+                    <table border="1" cellpadding="8" cellspacing="0">
+                        <tr><td><b>Projet</b></td><td>${JOB_NAME}</td></tr>
+                        <tr><td><b>Build</b></td><td>#${BUILD_NUMBER}</td></tr>
+                        <tr><td><b>Statut</b></td><td>SUCCESS</td></tr>
+                        <tr><td><b>Image Docker</b></td><td>${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${BUILD_NUMBER}</td></tr>
+                        <tr><td><b>Container</b></td><td>${CONTAINER_NAME}</td></tr>
+                        <tr><td><b>Application</b></td><td>http://jenkins.sip-academy.com:${HOST_PORT}</td></tr>
+                    </table>
+
+                    <p>
+                        <a href="${BUILD_URL}">Consulter le build Jenkins</a>
+                    </p>
+
+                    <p>Cordialement,<br>Jenkins CI/CD</p>
+                """,
+                to: "${EMAIL_TO}"
+            )
         }
 
         failure {
             echo 'ECHEC DE LA PIPELINE CI/CD !'
+
+            emailext(
+                subject: "FAILURE: ${JOB_NAME} - Build #${BUILD_NUMBER}",
+                mimeType: 'text/html',
+                body: """
+                    <h2 style="color:red;">Échec de la pipeline CI/CD !</h2>
+
+                    <p>Bonjour,</p>
+
+                    <p>Une erreur est survenue pendant l'exécution
+                    de votre pipeline Spring Boot.</p>
+
+                    <table border="1" cellpadding="8" cellspacing="0">
+                        <tr><td><b>Projet</b></td><td>${JOB_NAME}</td></tr>
+                        <tr><td><b>Build</b></td><td>#${BUILD_NUMBER}</td></tr>
+                        <tr><td><b>Statut</b></td><td>FAILURE</td></tr>
+                        <tr><td><b>Image Docker</b></td><td>${DOCKERHUB_USERNAME}/${IMAGE_NAME}</td></tr>
+                    </table>
+
+                    <p>
+                        <a href="${BUILD_URL}console">
+                            Consulter les logs Jenkins
+                        </a>
+                    </p>
+
+                    <p>Cordialement,<br>Jenkins CI/CD</p>
+                """,
+                to: "${EMAIL_TO}"
+            )
         }
 
         always {
