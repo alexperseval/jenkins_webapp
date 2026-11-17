@@ -19,7 +19,7 @@ pipeline {
 
         // Docker container
         CONTAINER_NAME = 'ibcgos-app-springboot-alexandre-container'
-        HOST_PORT = '8065'
+        HOST_PORT = '8067'
         CONTAINER_PORT = '89'
     }
 
